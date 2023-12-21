@@ -1,3 +1,5 @@
+<img src="https://github.com/ianshaloom/yohabits/assets/82651930/c20af38b-dd9e-41c0-a46b-2918bbcd6695" alt="Screenshot" height="500">
+
 # Yohabits
 
 Yohabits is a personal habit tracker app built with Flutter.
