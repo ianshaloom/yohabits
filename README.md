@@ -1,6 +1,6 @@
-# YoHabits
+# Yohabits
 
-YoHabits is a personal habit tracker app built with Flutter.
+Yohabits is a personal habit tracker app built with Flutter.
 
 ## Description
 
