@@ -11,20 +11,24 @@ class Habit extends HiveObject {
   String habitName;
 
   @HiveField(2)
-  bool isCompleted;
+  String habitDescription = '';
 
   @HiveField(3)
-  final DateTime dateCreated;
+  bool isCompleted;
 
   @HiveField(4)
-  List<DateTime> daysCompleted = [];
+  final DateTime dateCreated;
 
   @HiveField(5)
+  List<DateTime> daysCompleted = [];
+
+  @HiveField(6)
   int streak = 0;
 
   Habit({
     required this.habitId,
     required this.habitName,
+    this.habitDescription = '',
     required this.isCompleted,
     required this.dateCreated,
     this.daysCompleted = const [],

@@ -9,6 +9,7 @@ import '../../user-profile/views/profile_page.dart';
 import '../provider/homepage_provider.dart';
 import '../widget/habit_tile.dart';
 import '../widget/streaks.dart';
+import 'new_habit_bs.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -87,7 +88,9 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {},
+        onPressed: () async {
+          _showModalBs(context);
+        },
         child: const Icon(
           CupertinoIcons.pen,
           size: 35,
@@ -137,4 +140,19 @@ class _HomePageState extends State<HomePage> {
         ),
       );
 //
+
+  void _showModalBs(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      useSafeArea: true,
+      builder: (context) => Container(
+        height: MediaQuery.of(context).size.height,
+        child: NewHabitBottomSheetContent(),
+      ),
+    );
+  }
 }
+
+
