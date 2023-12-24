@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
@@ -20,12 +21,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late UserProfile userProfile;
-  late List<Habit> habits;
+  List<Habit> habits = [];
 
   @override
   void initState() {
     userProfile = context.read<HomepageProvider>().userProfile;
-    habits = defaultHabits;
+    context.read<HomepageProvider>().fetchHabits();
     habits.sort((a, b) => a.dateCreated.compareTo(b.dateCreated));
     super.initState();
   }
@@ -34,6 +35,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final color = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
+    final size = MediaQuery.of(context).size;
+
+    habits = context.watch<HomepageProvider>().habits;
 
     return Scaffold(
       appBar: AppBar(
@@ -71,25 +75,44 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: habits.length,
-                itemBuilder: (context, index) {
-                  final habit = habits[index];
-                  return HabitTile(
-                    index: index,
-                    habit: habit,
-                    onChanged: (value) {},
-                    onTap: () {},
-                  );
-                },
-              ),
+              child: habits.isEmpty
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Add a habit to get started',
+                          ),
+                          const SizedBox(height: 30),
+                          SvgPicture.asset(
+                            arrowDown,
+                            height: size.height * 0.1,
+                          )
+                        ],
+                      ),
+                    )
+                  : ListView.builder(
+                      itemCount: habits.length,
+                      itemBuilder: (context, index) {
+                        final habit = habits[index];
+                        return HabitTile(
+                          index: index,
+                          habit: habit,
+                          onChanged: (value) {},
+                          onTap: () {},
+                        );
+                      },
+                    ),
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          _showModalBs(context);
+          // _showModalBs(context);
+          context
+              .read<HomepageProvider>()
+              .changeAvatar(userProfile, maleAvatar2);
         },
         child: const Icon(
           CupertinoIcons.pen,
@@ -154,5 +177,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-

@@ -96,6 +96,7 @@ const String longestStreakImage = 'assets/images/longeststreak.svg';
 
 // other svg images path
 const String funUnderline = 'assets/images/fun-underline.svg';
+const String arrowDown = 'assets/images/arrow.svg';
 
 // svg colors
 const String svgPrimaryColor = '#FF0057CD';
