@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../../../constants.dart';
 import '../../../hive/models/onboard/onboard.dart';
+import '../../../hive/repo/habit_repo.dart';
 import '../../../hive/repo/onboard_repo.dart';
 import '../../../hive/repo/userprofile_repo.dart';
 import '../widgets/page.three.dart';
@@ -18,6 +20,7 @@ class OnBoardPage extends StatefulWidget {
 class _OnBoardPageState extends State<OnBoardPage> {
   final UserProfileRepo _userProfileRepo = UserProfileRepo();
   final OnboardRepo _onboardRepo = OnboardRepo();
+  final HabitRepo _habitRepo = HabitRepo();
 
   final PageController _controller = PageController();
   bool isLastIndex = false;
@@ -27,6 +30,7 @@ class _OnBoardPageState extends State<OnBoardPage> {
     _userProfileRepo.getUserProfileBool().then((value) {
       if (value) {
         _userProfileRepo.addDefaultUserProfile();
+        _habitRepo.addDefaultHabits(defaultHabits);
       }
     });
 

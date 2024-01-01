@@ -4,20 +4,34 @@ import 'package:intl/intl.dart';
 
 import '../../../constants.dart';
 import '../../../hive/models/habit/habit.dart';
+import '../../../hive/models/history/habit_history.dart';
+import '../../habits-details-page/views/habits_details.dart';
+import '../repo/habits_crud.dart';
 
-class HabitTile extends StatelessWidget {
+class HabitTile extends StatefulWidget {
+  final HabitsRecord habitsRecord;
   final Habit habit;
   final int index;
-  final Function(bool?)? onChanged;
-  final Function onTap;
 
-  HabitTile({
+  const HabitTile({
     super.key,
     required this.index,
     required this.habit,
-    required this.onChanged,
-    required this.onTap,
+    required this.habitsRecord,
   });
+
+  @override
+  State<HabitTile> createState() => _HabitTileState();
+}
+
+class _HabitTileState extends State<HabitTile> {
+  bool _isCompleted = false;
+
+  @override
+  void initState() {
+    _isCompleted = widget.habit.isCompleted;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +41,8 @@ class HabitTile extends StatelessWidget {
           Positioned(
             left: 0,
             child: Checkbox(
-              value: habit.isCompleted,
-              onChanged: onChanged,
+              value: _isCompleted,
+              onChanged: (value) => onChanged(value!),
               checkColor: Colors.white,
               shape: const CircleBorder(),
             ),
@@ -47,7 +61,17 @@ class HabitTile extends StatelessWidget {
               overlayColor: MaterialStateProperty.all(
                 Colors.transparent,
               ),
-              onTap: () => onTap(),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => HabitDetailsPage(
+                      index: widget.index,
+                      habit: widget.habit,
+                      habitsRecord: widget.habitsRecord,
+                    ),
+                  ),
+                );
+              },
               child: Container(
                 //margin: const EdgeInsets.only(left: 40),
                 width: double.infinity,
@@ -62,13 +86,13 @@ class HabitTile extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            habit.habitName,
+                            widget.habit.habitName,
                             style: TextStyle(
-                              fontWeight: habit.isCompleted
+                              fontWeight: widget.habit.isCompleted
                                   ? FontWeight.bold
                                   : FontWeight.w500,
                               // color: const Color.fromRGBO(44, 49, 64, 1),
-                              decoration: habit.isCompleted
+                              decoration: widget.habit.isCompleted
                                   ? TextDecoration.lineThrough
                                   : TextDecoration.none,
                             ),
@@ -77,9 +101,9 @@ class HabitTile extends StatelessWidget {
                             height: 3,
                           ),
                           Text(
-                            'Date Added: ${DateFormat.yMMMd().format(habit.dateCreated)}',
-                            style: TextStyle(
-                              color: const Color(0xff939191),
+                            'Date Added: ${DateFormat.yMMMd().format(widget.habit.dateCreated)}',
+                            style: const TextStyle(
+                              color: Color(0xff939191),
                               fontSize: 10,
                               letterSpacing: 1.5,
                             ),
@@ -90,10 +114,10 @@ class HabitTile extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 3, right: 8, left: 8),
                       child: Text(
-                        ' Current Streak: ${habit.streak}',
+                        ' Current Streak: ${widget.habit.streak}',
                         maxLines: 4,
-                        style: TextStyle(
-                          color: const Color(0xff000000),
+                        style: const TextStyle(
+                          color: Color(0xff000000),
                           fontSize: 12,
                           height: 1.2,
                         ),
@@ -108,4 +132,19 @@ class HabitTile extends StatelessWidget {
       ),
     );
   }
+
+  void onChanged(bool value) async {
+    bool isCompleted = await _habitCrud.markHabitDone(
+        widget.habitsRecord, widget.index, value);
+
+    setState(() {
+      _isCompleted = isCompleted;
+    });
+  }
+
+  void deleteHabit() async {
+    await _habitCrud.deleteHabit(widget.habitsRecord, widget.index);
+  }
 }
+
+final HabitsCrud _habitCrud = HabitsCrud();

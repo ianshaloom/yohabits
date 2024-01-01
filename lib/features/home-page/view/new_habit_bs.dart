@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
+import '../../../Helpers/data_helpers.dart';
+import '../../../hive/models/habit/habit.dart';
+import '../provider/homepage_provider.dart';
 
 class NewHabitBottomSheetContent extends StatefulWidget {
-  NewHabitBottomSheetContent({super.key});
+  const NewHabitBottomSheetContent({super.key});
 
   @override
   State<NewHabitBottomSheetContent> createState() =>
@@ -15,106 +20,117 @@ class _NewHabitBottomSheetContentState
   final TextEditingController habitDescriptionController =
       TextEditingController();
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final screenSize = MediaQuery.of(context).size;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
-        children: [
-          SizedBox(
-            width: screenSize.width,
-          ),
-          Text(
-            'Add New Habit',
-            style: textTheme.titleMedium,
-          ),
-          SizedBox(height: 20),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            SizedBox(
+              width: screenSize.width,
+            ),
+            Text(
+              'Add New Habit',
+              style: textTheme.titleMedium,
+            ),
+            const SizedBox(height: 20),
 
-          // date created text
-          Text(
-            '${DateFormat.yMMMd().format(DateTime.now())} ★ ${DateFormat.H().format(DateTime.now())} : ${DateFormat.M().format(DateTime.now())}',
-            style: TextStyle(
-              color: const Color(0xff939191),
-              fontSize: 10,
-              letterSpacing: 1.5,
-            ),
-          ),
-          SizedBox(height: 20),
-          TextFormField(
-            textCapitalization: TextCapitalization.words,
-            autocorrect: false,
-            textInputAction: TextInputAction.next,
-            controller: habitNameController,
-            decoration: InputDecoration(
-              labelText: 'Habit Name',
-              // labelStyle: textTheme.labelMedium,
-              hintText: 'Enter habit name',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
+            // date created text
+            Text(
+              '${DateFormat.yMMMd().format(DateTime.now())} ★ ${DateFormat.H().format(DateTime.now())} : ${DateFormat.M().format(DateTime.now())}',
+              style: const TextStyle(
+                color: Color(0xff939191),
+                fontSize: 10,
+                letterSpacing: 1.5,
               ),
             ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter habit name';
-              }
-              return null;
-            },
-          ),
+            const SizedBox(height: 20),
+            TextFormField(
+              textCapitalization: TextCapitalization.words,
+              autocorrect: false,
+              textInputAction: TextInputAction.next,
+              controller: habitNameController,
+              decoration: InputDecoration(
+                labelText: 'Habit Name',
+                // labelStyle: textTheme.labelMedium,
+                hintText: 'Enter habit name',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter habit name';
+                }
+                return null;
+              },
+            ),
 
-          // habit description textformfield
-          SizedBox(height: 20),
-          TextFormField(
-            controller: habitDescriptionController,
-            maxLines: 4,
-            textCapitalization: TextCapitalization.sentences,
-            autocorrect: false,
-            textInputAction: TextInputAction.done,
-            decoration: InputDecoration(
-              labelText: 'Description',
-              // labelStyle: textTheme.labelMedium,
-              hintText: 'Enter habit description',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
+            // habit description textformfield
+            const SizedBox(height: 20),
+            TextFormField(
+              controller: habitDescriptionController,
+              maxLines: 4,
+              textCapitalization: TextCapitalization.sentences,
+              autocorrect: false,
+              textInputAction: TextInputAction.done,
+              decoration: InputDecoration(
+                labelText: 'Description',
+                // labelStyle: textTheme.labelMedium,
+                hintText: 'Enter habit description',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
             ),
-          ),
-          SizedBox(height: 20),
-          FilledButton(
-            onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => StockTakePage(),
-              //   ),
-              // );
-            },
-            style: FilledButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              minimumSize: const Size.fromHeight(60),
-              // textStyle: Theme.of(context)
-              //     .textTheme
-              //     .labelLarge!
-              //     .copyWith(
-              //       fontSize: 17,
-              //     ),
-            ),
-            child: const Row(
+            const SizedBox(height: 20),
+            Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text(
-                  'Save New Habit',
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Cancel'),
                 ),
-                SizedBox(width: 40),
-                Icon(Icons.save_rounded)
+                const SizedBox(width: 20),
+                TextButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      _addNewHabit(
+                        habitNameController.text.trim(),
+                        habitDescriptionController.text.trim(),
+                      );
+                    }
+                  },
+                  child: const Text('Save'),
+                )
               ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
+  }
+
+  void _addNewHabit(String habitName, String habitDescription) {
+    final Habit newHabit = Habit(
+      habitId: DataHelpers.generateCode(10),
+      habitName: habitName,
+      habitDescription: habitDescription,
+      isCompleted: false,
+      dateCreated: DateTime.now(),
+      daysCompleted: [],
+      streak: 0,
+    );
+
+    context.read<HomepageProvider>().addHabit(newHabit);
+    Navigator.pop(context);
   }
 }

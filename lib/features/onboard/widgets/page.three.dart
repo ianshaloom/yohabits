@@ -15,10 +15,13 @@ class PageThree extends StatelessWidget {
       children: [
         Expanded(
           flex: 3,
-          child: SvgPicture.asset(
-            onboardImage3,
-            height: size.height * 0.3,
-            width: size.width * 0.4,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: SvgPicture.asset(
+              onboardImage3,
+              height: size.height * 0.3,
+              width: size.width * 0.4,
+            ),
           ),
         ),
         Expanded(

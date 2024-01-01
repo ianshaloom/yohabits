@@ -3,9 +3,11 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
 import 'constants.dart';
+import 'features/habits-details-page/provider/habits_details_provider.dart';
 import 'features/home-page/provider/homepage_provider.dart';
 import 'features/home-page/view/home_page.dart';
 import 'features/onboard/views/onboard_page.dart';
+import 'features/user-profile/provider/user_profile_provider.dart';
 import 'hive/hive_boxes.dart';
 import 'hive/models/onboard/onboard.dart';
 import 'theme/color_schemes.dart';
@@ -20,6 +22,12 @@ class YohabitsApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (_) => HomepageProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => UserProfileProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => HabitDetailProvider(),
         )
       ],
       child: MaterialApp(
@@ -41,7 +49,7 @@ class YohabitsApp extends StatelessWidget {
             }
 
             final onboard = box.values.first;
-            return onboard.showOnboard ? const OnBoardPage() : HomePage();
+            return onboard.showOnboard ? const OnBoardPage() : const HomePage();
           },
         ),
       ),

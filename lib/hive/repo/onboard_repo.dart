@@ -14,7 +14,6 @@ class OnboardRepo {
 
   // create and add default default onboard
   Future<Onboard> addDefaultOnboard() async {
-    print('defaultOnboard was created \n');
     await _onboardBox.add(defaultOnboard);
     return defaultOnboard;
   }

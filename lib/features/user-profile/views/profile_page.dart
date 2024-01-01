@@ -1,11 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
 // import 'package:provider/provider.dart';
 
+import '../../../Helpers/data_helpers.dart';
 import '../../../constants.dart';
 import '../../../hive/hive_boxes.dart';
 import '../../../hive/models/userprofile/userprofile.dart';
-import '../widgets/color_segmented_button.dart';
+import '../provider/user_profile_provider.dart';
+import '../widgets/edit_profile.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -15,6 +19,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  String greeting = DataHelpers.getGreetings();
+
   @override
   void initState() {
     super.initState();
@@ -22,6 +28,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
@@ -32,101 +39,85 @@ class _ProfilePageState extends State<ProfilePage> {
             Navigator.of(context).pop();
           },
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(CupertinoIcons.pencil),
+            onPressed: () => _editDialog(context),
+          ),
+        ],
       ),
       body: ValueListenableBuilder<Box<UserProfile>>(
         valueListenable: HiveBoxes.userProfilesBox.listenable(),
         builder: (context, Box<UserProfile> box, _) {
           final UserProfile userProfile = box.values.first;
+          context.read<UserProfileProvider>().userprofile = userProfile;
 
-          return Column(
-            children: [
-              const SizedBox(height: 20),
-              Container(
-                alignment: Alignment.center,
-                child: CircleAvatar(
-                  radius: 51.5,
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: ListView(
+              children: [
+                const SizedBox(height: 10),
+                Container(
+                  alignment: Alignment.center,
                   child: CircleAvatar(
-                    backgroundImage: AssetImage(userProfile.avatar),
-                    backgroundColor: Theme.of(context).colorScheme.surface,
-                    radius: 50,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10),
-              ListTile(
-                leading: const SizedBox(
-                  width: 50,
-                  height: 50,
-                  child: Icon(
-                    Icons.person_outline,
-                    size: 30,
-                  ),
-                ),
-                title: const Text('Name'),
-                subtitle: Text(userProfile.username),
-              ),
-              const SizedBox(height: 30),
-              Column(
-                children: [
-                  // const Divider(),
-                  const SizedBox(height: 10),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Text(
-                      'Select Avatar',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                      ),
+                    radius: 51.5,
+                    child: CircleAvatar(
+                      backgroundImage: AssetImage(userProfile.avatar),
+                      backgroundColor: Theme.of(context).colorScheme.surface,
+                      radius: 50,
                     ),
                   ),
-                  const SizedBox(height: 30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ...avatars.map((avatar) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: GestureDetector(
-                            onTap: () {
-                              // context.read<ProfileProvida>().updateAvatar(
-                              //       avatar,
-                              //       widget.cloudUser.userId,
-                              //     );
-                            },
-                            child: CircleAvatar(
-                              backgroundImage: AssetImage(avatar),
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.surface,
-                              radius: 30,
+                ),
+                const SizedBox(height: 10),
+                // greeting text
+                Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    '$greeting, ${userProfile.username}',
+                    maxLines: 2,
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          fontWeight: FontWeight.w300,
+                        ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Column(
+                  children: [
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 10, bottom: 10),
+                      child: Text(
+                        'Quick Tips Just For You',
+                        style: textTheme.labelLarge,
+                      ),
+                    ),
+                    Card(
+                      color: Colors.transparent,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              tips,
+                              textAlign: TextAlign.left,
+                              style: Theme.of(context).textTheme.labelMedium,
                             ),
                           ),
-                        );
-                      }).toList(),
-                    ],
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  const Divider(),
-                  const SizedBox(height: 10),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Text(
-                      'Select Theme Color',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
+                        ],
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 30),
-                  ColorSegmentedButton(),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           );
         },
       ),
     );
+  }
+
+  void _editDialog(BuildContext context) {
+    showDialog(context: context, builder: (_) => EditProfileDialog());
   }
 }

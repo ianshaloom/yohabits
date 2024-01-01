@@ -65,11 +65,24 @@ final List<Habit> defaultHabits = [
     streak: 0,
   ),
 ];
+const String tips = '''
+1. Keep a manageble list of habits, 10 Max
 
+2. Let your habit be less that 25 character you dont wanna keep paragraph of text
+
+3. Tap on habit to manage and view your overall streaks
+
+4. You retain all the habits, the stronger the color becomes on the heatmap
+
+5. Habit heatmap is powerful tool if you've been working on a consistent habit list.
+
+🚫 If you clear all your habits you will lose all the data stored for that list of habits
+  ''';
 // hive Boxes
 const String habitBox = 'habitBox';
 const String onboardBox = 'onboardBox';
 const String userProfileBox = 'userProfileBox';
+const String habitHistoryBox = 'habitHistoryBox';
 
 // onboard images path
 const String onboardImage1 = 'assets/images/onboard-svg-1.svg';
@@ -82,10 +95,9 @@ const String femaleAvatar2 = 'assets/images/avatar-2.png';
 const String maleAvatar1 = 'assets/images/avatar-3.png';
 const String maleAvatar2 = 'assets/images/avatar-4.png';
 const String maleAvatar3 = 'assets/images/avatar-5.png';
-const List<String> avatars = const [
+const List<String> avatars = [
   femaleAvatar1,
   femaleAvatar2,
-  maleAvatar1,
   maleAvatar2,
   maleAvatar3
 ];

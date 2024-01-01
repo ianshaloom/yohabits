@@ -34,8 +34,8 @@ class StreaksCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 25, left: 8),
+                    const Padding(
+                      padding: EdgeInsets.only(right: 25, left: 8),
                       child: Text(
                         'Todays Habit Streaks',
                         textAlign: TextAlign.justify,
@@ -51,8 +51,8 @@ class StreaksCard extends StatelessWidget {
                     ),
                     Text(
                       'Date Added: ${DateFormat.yMMMd().format(DateTime.now())}',
-                      style: TextStyle(
-                        color: const Color(0xff939191),
+                      style: const TextStyle(
+                        color: Color(0xff939191),
                         fontSize: 10,
                         letterSpacing: 1.5,
                       ),
@@ -87,7 +87,7 @@ class StreaksCard extends StatelessWidget {
                                   Text(
                                     numberFormat.format(00),
                                     textAlign: TextAlign.justify,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
                                       letterSpacing: 1,
@@ -98,8 +98,8 @@ class StreaksCard extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
                           child: Text(
                             'Current Streak',
                             style: TextStyle(
@@ -133,7 +133,7 @@ class StreaksCard extends StatelessWidget {
                                   Text(
                                     numberFormat.format(00),
                                     textAlign: TextAlign.justify,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
                                       letterSpacing: 1,
@@ -144,8 +144,8 @@ class StreaksCard extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
                           child: Text(
                             'Longest Streak',
                             style: TextStyle(

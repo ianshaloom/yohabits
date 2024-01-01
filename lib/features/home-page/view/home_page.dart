@@ -1,33 +1,30 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
+import '../../../hive/hive_boxes.dart';
 import '../../../hive/models/habit/habit.dart';
 import '../../../hive/models/userprofile/userprofile.dart';
 import '../../user-profile/views/profile_page.dart';
 import '../provider/homepage_provider.dart';
-import '../widget/habit_tile.dart';
+import '../widget/habits_listview.dart';
 import '../widget/streaks.dart';
 import 'new_habit_bs.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({super.key});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  late UserProfile userProfile;
   List<Habit> habits = [];
 
   @override
   void initState() {
-    userProfile = context.read<HomepageProvider>().userProfile;
     context.read<HomepageProvider>().fetchHabits();
-    habits.sort((a, b) => a.dateCreated.compareTo(b.dateCreated));
     super.initState();
   }
 
@@ -35,9 +32,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final color = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
-    final size = MediaQuery.of(context).size;
 
     habits = context.watch<HomepageProvider>().habits;
+    habits.sort((a, b) => b.dateCreated.compareTo(a.dateCreated));
 
     return Scaffold(
       appBar: AppBar(
@@ -52,7 +49,7 @@ class _HomePageState extends State<HomePage> {
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           children: [
-            StreaksCard(),
+            const StreaksCard(),
             Row(
               children: [
                 Text(
@@ -74,48 +71,19 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            Expanded(
-              child: habits.isEmpty
-                  ? Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Add a habit to get started',
-                          ),
-                          const SizedBox(height: 30),
-                          SvgPicture.asset(
-                            arrowDown,
-                            height: size.height * 0.1,
-                          )
-                        ],
-                      ),
-                    )
-                  : ListView.builder(
-                      itemCount: habits.length,
-                      itemBuilder: (context, index) {
-                        final habit = habits[index];
-                        return HabitTile(
-                          index: index,
-                          habit: habit,
-                          onChanged: (value) {},
-                          onTap: () {},
-                        );
-                      },
-                    ),
+            const Expanded(
+              child: HabitsListview(),
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          // _showModalBs(context);
-          context
-              .read<HomepageProvider>()
-              .changeAvatar(userProfile, maleAvatar2);
+        onPressed: () {
+          _showModalBs(context);
+          // print('Habit records: ${HiveBoxes.habitHistoriesBox.isEmpty}');
         },
         child: const Icon(
-          CupertinoIcons.pen,
+          CupertinoIcons.add,
           size: 35,
         ),
       ),
@@ -125,42 +93,48 @@ class _HomePageState extends State<HomePage> {
   Widget _appBar(BuildContext context, ColorScheme color) => Container(
         margin: const EdgeInsets.only(left: 0, top: 0),
         alignment: Alignment.centerLeft,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                CircleAvatar(
-                  radius: 27,
-                  child: CircleAvatar(
-                    backgroundColor: color.surface,
-                    backgroundImage: AssetImage(userProfile.avatar),
-                    radius: 25.5,
+        child: ValueListenableBuilder(
+            valueListenable: HiveBoxes.userProfilesBox.listenable(),
+            builder: (context, Box<UserProfile> box, child) {
+              final userProfile = box.values.first;
+
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 27,
+                        child: CircleAvatar(
+                          backgroundColor: color.surface,
+                          backgroundImage: AssetImage(userProfile.avatar),
+                          radius: 25.5,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        'Hi, ${userProfile.username}',
+                        style: Theme.of(context).textTheme.labelMedium,
+                      ),
+                    ],
                   ),
-                ),
-                const SizedBox(width: 10),
-                Text(
-                  'Hi, ${userProfile.username}',
-                  style: Theme.of(context).textTheme.labelMedium,
-                ),
-              ],
-            ),
-            IconButton(
-              onPressed: () async {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProfilePage(),
+                  IconButton(
+                    onPressed: () async {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ProfilePage(),
+                        ),
+                      );
+                    },
+                    icon: Icon(
+                      Icons.menu,
+                      color: color.onSurface,
+                    ),
                   ),
-                );
-              },
-              icon: Icon(
-                Icons.menu,
-                color: color.onSurface,
-              ),
-            ),
-          ],
-        ),
+                ],
+              );
+            }),
       );
 //
 
@@ -170,9 +144,9 @@ class _HomePageState extends State<HomePage> {
       isScrollControlled: true,
       showDragHandle: true,
       useSafeArea: true,
-      builder: (context) => Container(
+      builder: (context) => SizedBox(
         height: MediaQuery.of(context).size.height,
-        child: NewHabitBottomSheetContent(),
+        child: const NewHabitBottomSheetContent(),
       ),
     );
   }

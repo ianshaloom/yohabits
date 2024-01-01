@@ -10,6 +10,10 @@ class HabitRepo {
 
   final Box<Habit> _habitBox;
 
+  Future<void> addDefaultHabits(List<Habit> habits) async {
+    await _habitBox.addAll(habits);
+  }
+
   Future<void> addHabit(Habit habit) async {
     await _habitBox.add(habit);
   }

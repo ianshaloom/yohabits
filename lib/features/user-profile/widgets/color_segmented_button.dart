@@ -11,7 +11,7 @@ class ColorSegmentedButton extends StatefulWidget {
 class _ColorSegmentedButtonState extends State<ColorSegmentedButton> {
   late UserColor colorsView;
 
-  UserColor _getColor(String color) {
+  UserColor getColor(String color) {
     switch (color) {
       case 'brown':
         return UserColor.brown;
@@ -28,7 +28,7 @@ class _ColorSegmentedButtonState extends State<ColorSegmentedButton> {
     }
   }
 
-  String _getColorString(UserColor color) {
+  String getColorString(UserColor color) {
     switch (color) {
       case UserColor.brown:
         return 'brown';

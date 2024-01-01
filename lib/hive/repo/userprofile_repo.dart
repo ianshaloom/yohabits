@@ -14,7 +14,6 @@ class UserProfileRepo {
 
   // create and add default default user profile
   Future<void> addDefaultUserProfile() async {
-    print('defaultUserProfile was created \n');
     await _userProfileBox.add(defaultUserProfile);
   }
 

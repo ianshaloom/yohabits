@@ -25,6 +25,19 @@ class Habit extends HiveObject {
   @HiveField(6)
   int streak = 0;
 
+  // habit empty obj getter
+  static Habit get empty {
+    return Habit(
+      habitId: '',
+      habitName: '',
+      habitDescription: '',
+      isCompleted: false,
+      dateCreated: DateTime.now(),
+      daysCompleted: [],
+      streak: 0,
+    );
+  }
+
   Habit({
     required this.habitId,
     required this.habitName,
