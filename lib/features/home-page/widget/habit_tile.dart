@@ -5,10 +5,10 @@ import 'package:intl/intl.dart';
 import '../../../constants.dart';
 import '../../../hive/models/habit/habit.dart';
 import '../../../hive/models/history/habit_history.dart';
+import '../../../hive/repo/database_manager.dart';
 import '../../habits-details-page/views/habits_details.dart';
-import '../repo/habits_crud.dart';
 
-class HabitTile extends StatefulWidget {
+class HabitTile extends StatelessWidget {
   final HabitsRecord habitsRecord;
   final Habit habit;
   final int index;
@@ -20,18 +20,7 @@ class HabitTile extends StatefulWidget {
     required this.habitsRecord,
   });
 
-  @override
-  State<HabitTile> createState() => _HabitTileState();
-}
-
-class _HabitTileState extends State<HabitTile> {
-  bool _isCompleted = false;
-
-  @override
-  void initState() {
-    _isCompleted = widget.habit.isCompleted;
-    super.initState();
-  }
+  // bool _isCompleted = false;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +30,7 @@ class _HabitTileState extends State<HabitTile> {
           Positioned(
             left: 0,
             child: Checkbox(
-              value: _isCompleted,
+              value: habit.isCompleted,
               onChanged: (value) => onChanged(value!),
               checkColor: Colors.white,
               shape: const CircleBorder(),
@@ -65,9 +54,9 @@ class _HabitTileState extends State<HabitTile> {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => HabitDetailsPage(
-                      index: widget.index,
-                      habit: widget.habit,
-                      habitsRecord: widget.habitsRecord,
+                      index: index,
+                      habit: habit,
+                      habitsRecord: habitsRecord,
                     ),
                   ),
                 );
@@ -86,13 +75,13 @@ class _HabitTileState extends State<HabitTile> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.habit.habitName,
+                            habit.habitName,
                             style: TextStyle(
-                              fontWeight: widget.habit.isCompleted
+                              fontWeight: habit.isCompleted
                                   ? FontWeight.bold
                                   : FontWeight.w500,
                               // color: const Color.fromRGBO(44, 49, 64, 1),
-                              decoration: widget.habit.isCompleted
+                              decoration: habit.isCompleted
                                   ? TextDecoration.lineThrough
                                   : TextDecoration.none,
                             ),
@@ -101,7 +90,7 @@ class _HabitTileState extends State<HabitTile> {
                             height: 3,
                           ),
                           Text(
-                            'Date Added: ${DateFormat.yMMMd().format(widget.habit.dateCreated)}',
+                            'Date Added: ${DateFormat.yMMMd().format(habit.dateCreated)}',
                             style: const TextStyle(
                               color: Color(0xff939191),
                               fontSize: 10,
@@ -114,7 +103,7 @@ class _HabitTileState extends State<HabitTile> {
                     Padding(
                       padding: const EdgeInsets.only(top: 3, right: 8, left: 8),
                       child: Text(
-                        ' Current Streak: ${widget.habit.streak}',
+                        ' Current Streak: ${habit.streaks}',
                         maxLines: 4,
                         style: const TextStyle(
                           color: Color(0xff000000),
@@ -134,17 +123,18 @@ class _HabitTileState extends State<HabitTile> {
   }
 
   void onChanged(bool value) async {
-    bool isCompleted = await _habitCrud.markHabitDone(
-        widget.habitsRecord, widget.index, value);
-
-    setState(() {
-      _isCompleted = isCompleted;
-    });
+    // habit.isCompleted = value;
+    // await habit.save();
+    await _dbManager.markHabitDone(
+      habitsRecord,
+      habit,
+      value,
+    );
   }
 
   void deleteHabit() async {
-    await _habitCrud.deleteHabit(widget.habitsRecord, widget.index);
+    await _dbManager.deleteHabit(habitsRecord, index);
   }
 }
 
-final HabitsCrud _habitCrud = HabitsCrud();
+final DatabaseManager _dbManager = DatabaseManager();

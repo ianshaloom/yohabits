@@ -133,6 +133,29 @@ class HabitDetailsPage extends StatelessWidget {
               ),
             ],
           ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Days Completed: ',
+                style: textTheme.titleSmall!.copyWith(
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              Text(
+                context
+                    .read<HabitDetailProvider>()
+                    .habit
+                    .daysCompleted
+                    .length
+                    .toString(),
+                style: textTheme.titleSmall!.copyWith(
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );

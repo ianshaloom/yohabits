@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../hive/hive_boxes.dart';
+import '../../../hive/models/habit/habit.dart';
+import '../../../hive/models/history/habit_history.dart';
 import '../../../hive/repo/database_manager.dart';
 import '../repo/date_time.dart';
 import 'habit_tile.dart';
@@ -14,13 +16,13 @@ class HabitsListview extends StatelessWidget {
     return FutureBuilder(
       future: _habitsDatabase.loadCurrentDb(),
       builder: (context, snapshot) {
+        final todaysHabitsRecords = snapshot.data;
 
         if (snapshot.connectionState == ConnectionState.done) {
           return ValueListenableBuilder(
-            valueListenable: HiveBoxes.habitHistoriesBox.listenable(),
+            valueListenable: HiveBoxes.habitsBox.listenable(),
             builder: (context, box, _) {
-              final todaysHabitsRecords = box.get(todaysDate());
-              final dailyHabits = todaysHabitsRecords!.habits;
+              final dailyHabits = box.values.cast<Habit>().toList();
               dailyHabits
                   .sort((a, b) => b.dateCreated.compareTo(a.dateCreated));
 
@@ -40,7 +42,7 @@ class HabitsListview extends StatelessWidget {
                   return HabitTile(
                     index: index,
                     habit: dailyHabit,
-                    habitsRecord: todaysHabitsRecords,
+                    habitsRecord: todaysHabitsRecords!,
                   );
                 },
               );

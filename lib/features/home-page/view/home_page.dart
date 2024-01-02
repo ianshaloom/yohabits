@@ -78,7 +78,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
+        onPressed: () async {
           _showModalBs(context);
           // print('Habit records: ${HiveBoxes.habitHistoriesBox.isEmpty}');
         },
@@ -114,7 +114,11 @@ class _HomePageState extends State<HomePage> {
                       const SizedBox(width: 10),
                       Text(
                         'Hi, ${userProfile.username}',
-                        style: Theme.of(context).textTheme.labelMedium,
+                        style:
+                            Theme.of(context).textTheme.labelMedium!.copyWith(
+                                  // native font family
+                                  fontFamily: 'Sans-Serif',
+                                ),
                       ),
                     ],
                   ),

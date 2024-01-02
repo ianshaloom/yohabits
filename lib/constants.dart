@@ -19,6 +19,7 @@ final List<Habit> defaultHabits = [
   Habit(
     habitId: DataHelpers.generateCode(10),
     habitName: 'Drink Water',
+    habitDescription: '1. Keep a manageble list of habits, 10 Max',
     isCompleted: false,
     dateCreated: DateTime.now(),
     daysCompleted: [],
@@ -27,6 +28,8 @@ final List<Habit> defaultHabits = [
   Habit(
     habitId: DataHelpers.generateCode(10),
     habitName: 'Exercise',
+    habitDescription:
+        '2. Let your habit be less that 25 character you dont wanna keep paragraph',
     isCompleted: false,
     dateCreated: DateTime.now(),
     daysCompleted: [],
@@ -35,6 +38,7 @@ final List<Habit> defaultHabits = [
   Habit(
     habitId: DataHelpers.generateCode(10),
     habitName: 'Read',
+    habitDescription: '1. Keep a manageble list of habits, 10 Max',
     isCompleted: false,
     dateCreated: DateTime.now(),
     daysCompleted: [],
@@ -43,6 +47,7 @@ final List<Habit> defaultHabits = [
   Habit(
     habitId: DataHelpers.generateCode(10),
     habitName: 'Meditate',
+    habitDescription: '3. Tap on habit to manage and view your overall streaks',
     isCompleted: false,
     dateCreated: DateTime.now(),
     daysCompleted: [],
@@ -51,6 +56,8 @@ final List<Habit> defaultHabits = [
   Habit(
     habitId: DataHelpers.generateCode(10),
     habitName: 'Eat Healthy',
+    habitDescription:
+        '5. Habit heatmap is powerful tool if youve been working on a consistent habit list.',
     isCompleted: false,
     dateCreated: DateTime.now(),
     daysCompleted: [],
@@ -59,6 +66,8 @@ final List<Habit> defaultHabits = [
   Habit(
     habitId: DataHelpers.generateCode(10),
     habitName: 'Wake Up Early',
+    habitDescription:
+        '4. You retain all the habits, the stronger the color becomes on the heatmap',
     isCompleted: false,
     dateCreated: DateTime.now(),
     daysCompleted: [],
