@@ -127,7 +127,6 @@ class _NewHabitBottomSheetContentState
       isCompleted: false,
       dateCreated: DateTime.now(),
       daysCompleted: [],
-      streak: 0,
     );
 
     context.read<HomepageProvider>().addHabit(newHabit);

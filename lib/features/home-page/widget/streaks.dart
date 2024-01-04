@@ -37,7 +37,7 @@ class StreaksCard extends StatelessWidget {
                     const Padding(
                       padding: EdgeInsets.only(right: 25, left: 8),
                       child: Text(
-                        'Todays Habit Streaks',
+                        'Overal Habits Streaks',
                         textAlign: TextAlign.justify,
                         style: TextStyle(
                           fontSize: 16,
@@ -50,7 +50,7 @@ class StreaksCard extends StatelessWidget {
                       height: 3,
                     ),
                     Text(
-                      'Date Added: ${DateFormat.yMMMd().format(DateTime.now())}',
+                      'Last Completed: ${DateFormat.yMMMd().format(DateTime.now())}',
                       style: const TextStyle(
                         color: Color(0xff939191),
                         fontSize: 10,

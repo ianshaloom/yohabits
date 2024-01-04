@@ -23,7 +23,6 @@ final List<Habit> defaultHabits = [
     isCompleted: false,
     dateCreated: DateTime.now(),
     daysCompleted: [],
-    streak: 0,
   ),
   Habit(
     habitId: DataHelpers.generateCode(10),
@@ -33,7 +32,6 @@ final List<Habit> defaultHabits = [
     isCompleted: false,
     dateCreated: DateTime.now(),
     daysCompleted: [],
-    streak: 0,
   ),
   Habit(
     habitId: DataHelpers.generateCode(10),
@@ -42,7 +40,6 @@ final List<Habit> defaultHabits = [
     isCompleted: false,
     dateCreated: DateTime.now(),
     daysCompleted: [],
-    streak: 0,
   ),
   Habit(
     habitId: DataHelpers.generateCode(10),
@@ -51,7 +48,6 @@ final List<Habit> defaultHabits = [
     isCompleted: false,
     dateCreated: DateTime.now(),
     daysCompleted: [],
-    streak: 0,
   ),
   Habit(
     habitId: DataHelpers.generateCode(10),
@@ -61,7 +57,6 @@ final List<Habit> defaultHabits = [
     isCompleted: false,
     dateCreated: DateTime.now(),
     daysCompleted: [],
-    streak: 0,
   ),
   Habit(
     habitId: DataHelpers.generateCode(10),
@@ -71,10 +66,10 @@ final List<Habit> defaultHabits = [
     isCompleted: false,
     dateCreated: DateTime.now(),
     daysCompleted: [],
-    streak: 0,
   ),
 ];
-const String tips = '''
+const String tips =
+    '''
 1. Keep a manageble list of habits, 10 Max
 
 2. Let your habit be less that 25 character you dont wanna keep paragraph of text

@@ -103,7 +103,7 @@ class HabitTile extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 3, right: 8, left: 8),
                       child: Text(
-                        ' Current Streak: ${habit.streaks}',
+                        ' Current Streak: ${habit.currentStreaks}',
                         maxLines: 4,
                         style: const TextStyle(
                           color: Color(0xff000000),

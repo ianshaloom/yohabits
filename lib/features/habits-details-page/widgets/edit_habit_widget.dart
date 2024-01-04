@@ -124,7 +124,6 @@ class _EditHabitWidgetState extends State<EditHabitWidget> {
       isCompleted: habit.isCompleted,
       dateCreated: habit.dateCreated,
       daysCompleted: habit.daysCompleted,
-      streak: habit.streak,
     );
 
     context.read<HabitDetailProvider>().habit = newHabit;

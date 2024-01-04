@@ -22,37 +22,43 @@ class Habit extends HiveObject {
   @HiveField(5)
   List<DateTime> daysCompleted = [];
 
-  @HiveField(6)
-  int streak = 0;
-
   // getters
-  int get streaks => computeStreaks();
+  int get currentStreaks => computeStreaks(false);
+  int get longestStreaks => computeStreaks(true);
 
-  int computeStreaks() {
-    int streaks = 0;
+  int computeStreaks(bool isLongestStreaks) {
+    List<DateTime> completedDates = daysCompleted;
 
-    if (daysCompleted.isEmpty) return streaks;
-
-    // if habit was not completed yesterday, return 0
-    // if (daysCompleted.first.difference(DateTime.now()).inDays != 1) {
-    //   return streaks;
-    // }
-
-    // Sort dates in descending order
-    daysCompleted.sort((a, b) => b.compareTo(a));
-
-    for (int i = 0; i < (daysCompleted.length - 1); i++) {
-      print('Days completed: $daysCompleted');
-      // Check if the difference between consecutive dates is one day
-      if (daysCompleted[i].difference(daysCompleted[i + 1]).inDays == 1) {
-        streaks++;
-        print('Streaks:--------------- $streaks');
-      } else {
-        break;
-      }
+    if (completedDates.isEmpty) {
+      return 0;
     }
 
-    return streaks;
+    // Sort dates as from the oldest to the newest
+    completedDates.sort((a, b) => a.compareTo(b));
+
+    // Compute the streak
+    int currentStreak = 1;
+    int longestStreak = 1;
+
+    for (int i = 1; i < completedDates.length; i++) {
+      // Check if the current date is one day after the previous date
+      if (completedDates[i].difference(completedDates[i - 1]).inDays == 1) {
+        currentStreak++;
+      } else {
+        // Reset streak if the current date doesn't follow the previous date
+        currentStreak = 1;
+      }
+
+      // Update the longest streak
+      longestStreak =
+          currentStreak > longestStreak ? currentStreak : longestStreak;
+    }
+
+    if (isLongestStreaks) {
+      return longestStreak;
+    } else {
+      return currentStreak;
+    }
   }
 
   // habit empty obj getter
@@ -64,7 +70,6 @@ class Habit extends HiveObject {
       isCompleted: false,
       dateCreated: DateTime.now(),
       daysCompleted: [],
-      streak: 0,
     );
   }
 
@@ -75,6 +80,5 @@ class Habit extends HiveObject {
     required this.isCompleted,
     required this.dateCreated,
     this.daysCompleted = const [],
-    this.streak = 0,
   });
 }

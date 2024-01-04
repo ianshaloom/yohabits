@@ -124,9 +124,6 @@ class DatabaseManager {
       printt(habit.daysCompleted);
     }
 
-    // update streaks made by consecutive days completed
-    int streaks = computeStreaks(habit.daysCompleted);
-    habit.streak = streaks;
 
     // update habit
     await habit.save();
