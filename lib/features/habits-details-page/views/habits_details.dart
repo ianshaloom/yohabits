@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -71,7 +72,7 @@ class HabitDetailsPage extends StatelessWidget {
                                   .read<HabitDetailProvider>()
                                   .habit
                                   .habitName,
-                              style: textTheme.titleMedium!.copyWith(
+                              style: textTheme.titleLarge!.copyWith(
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -102,14 +103,14 @@ class HabitDetailsPage extends StatelessWidget {
                               children: [
                                 Icon(
                                   CupertinoIcons.calendar,
-                                  color:
-                                      Theme.of(context).colorScheme.onSurface,
+                                  color: Colors.blueAccent.withOpacity(0.8),
                                 ),
                                 const SizedBox(width: 10),
                                 Text(
                                   'Time of Day',
-                                  style: textTheme.labelMedium!.copyWith(
+                                  style: textTheme.titleSmall!.copyWith(
                                     fontWeight: FontWeight.w600,
+                                    fontSize: 15,
                                   ),
                                 ),
                               ],
@@ -117,6 +118,42 @@ class HabitDetailsPage extends StatelessWidget {
                             const Divider(),
                             Text(
                               'Tommorrow, 20:00',
+                              style: textTheme.titleMedium!.copyWith(
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 110,
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  CupertinoIcons.location,
+                                  color: Colors.green.withOpacity(1),
+                                ),
+                                const SizedBox(width: 10),
+                                Text(
+                                  'Place',
+                                  style: textTheme.titleSmall!.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const Divider(),
+                            Text(
+                              'Home, Work, Gym, School, etc.',
                               style: textTheme.titleMedium!.copyWith(
                                 fontSize: 12,
                               ),
@@ -273,151 +310,153 @@ class Streaks extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     NumberFormat numberFormat = NumberFormat("00");
     double radius = 45;
+    double fontSize1 = 14;
+    String fontFam = 'Gilroy';
 
     return Card(
       elevation: 2,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            // height: 210,
-            width: screenSize.width,
-            margin: const EdgeInsets.all(8),
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 25, left: 8),
-                      child: Text('Habit Streaks',
-                          textAlign: TextAlign.justify,
-                          style: textTheme.labelMedium!.copyWith(
-                            fontWeight: FontWeight.w600,
-                          )),
-                    ),
-                    const SizedBox(
-                      height: 3,
-                    ),
-                    Text(
-                      lastCompleted == null
-                          ? 'Last Completed: Never'
-                          : 'Last Completed: ${DateFormat.yMMMd().format(lastCompleted!)}',
-                      style: const TextStyle(
-                        color: Color(0xff939191),
-                        fontSize: 9,
-                        letterSpacing: 1.5,
-                      ),
-                    )
-                  ],
+                Text(
+                  'Habit Streaks',
+                  style: textTheme.titleMedium!.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                  ),
                 ),
-                const SizedBox(height: 25),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-                      children: [
-                        Stack(
-                          children: [
-                            CircleAvatar(
-                              radius: radius,
-                              backgroundColor: Colors.transparent,
-                              child: SvgPicture.asset(
-                                currentStreakImage,
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                            Positioned(
-                              top: 10,
-                              bottom: 0,
-                              right: 0,
-                              left: 0,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    numberFormat.format(currentStreak),
-                                    textAlign: TextAlign.justify,
-                                    style: textTheme.titleMedium!.copyWith(
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'Current Streak',
-                            style: textTheme.labelMedium!.copyWith(
-                              letterSpacing: 1.5,
-                              fontSize: 11,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Stack(
-                          children: [
-                            CircleAvatar(
-                              radius: radius,
-                              backgroundColor: Colors.transparent,
-                              child: SvgPicture.asset(
-                                longestStreakImage,
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                            Positioned(
-                              top: 10,
-                              bottom: 0,
-                              right: 0,
-                              left: 0,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    numberFormat.format(longestStreak),
-                                    textAlign: TextAlign.justify,
-                                    style: textTheme.titleMedium!.copyWith(
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'Longest Streak',
-                            style: textTheme.labelMedium!.copyWith(
-                              letterSpacing: 1.5,
-                              fontSize: 11,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
+                Text(
+                  lastCompleted == null
+                      ? 'Last Completed: Never'
+                      : 'Last Completed: ${DateFormat.yMMMd().format(lastCompleted!)}',
+                  style: const TextStyle(
+                    color: Color(0xff939191),
+                    fontSize: 9,
+                    letterSpacing: 1.5,
+                  ),
                 ),
               ],
             ),
-          ),
-        ],
+            const Divider(),
+            Container(
+              // height: 210,
+              width: screenSize.width,
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Column(
+                        children: [
+                          Stack(
+                            children: [
+                              CircleAvatar(
+                                radius: radius,
+                                backgroundColor: Colors.transparent,
+                                child: SvgPicture.asset(
+                                  currentStreakImage,
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                              Positioned(
+                                top: 10,
+                                bottom: 0,
+                                right: 0,
+                                left: 0,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      numberFormat.format(currentStreak),
+                                      textAlign: TextAlign.justify,
+                                      style: textTheme.titleMedium!.copyWith(
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'Current Streak',
+                              style: textTheme.labelMedium!.copyWith(
+                                letterSpacing: 1.5,
+                                fontSize: fontSize1,
+                                fontFamily: fontFam,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Stack(
+                            children: [
+                              CircleAvatar(
+                                radius: radius,
+                                backgroundColor: Colors.transparent,
+                                child: SvgPicture.asset(
+                                  longestStreakImage,
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                              Positioned(
+                                top: 10,
+                                bottom: 0,
+                                right: 0,
+                                left: 0,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      numberFormat.format(longestStreak),
+                                      textAlign: TextAlign.justify,
+                                      style: textTheme.titleMedium!.copyWith(
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'Longest Streak',
+                              style: textTheme.labelMedium!.copyWith(
+                                letterSpacing: 1.5,
+                                fontSize: fontSize1,
+                                fontFamily: fontFam,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
