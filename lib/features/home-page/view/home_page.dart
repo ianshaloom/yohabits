@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:yohabits/theme/text_scheme.dart';
 
 import '../../../hive/hive_boxes.dart';
 import '../../../hive/models/habit/habit.dart';
@@ -54,18 +55,15 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Text(
                   'Your Habits',
-                  style: textTheme.titleSmall!.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: bodyDefaultBold(textTheme),
                 ),
                 const Spacer(),
                 TextButton(
                   onPressed: () {},
                   child: Text(
                     'See All',
-                    style: textTheme.titleSmall!.copyWith(
+                    style: bodyDefault(textTheme).copyWith(
                       color: color.primary,
-                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
@@ -114,11 +112,7 @@ class _HomePageState extends State<HomePage> {
                       const SizedBox(width: 10),
                       Text(
                         'Hi, ${userProfile.username}',
-                        style:
-                            Theme.of(context).textTheme.labelMedium!.copyWith(
-                                  // native font family
-                                  fontFamily: 'Sans-Serif',
-                                ),
+                        style: bodyDefault(Theme.of(context).textTheme),
                       ),
                     ],
                   ),
@@ -144,10 +138,9 @@ class _HomePageState extends State<HomePage> {
 
   void _showModalBs(BuildContext context) {
     showModalBottomSheet(
-      context: context,
       isScrollControlled: true,
-      showDragHandle: true,
-      useSafeArea: true,
+      isDismissible: true,
+      context: context,
       builder: (context) => SizedBox(
         height: MediaQuery.of(context).size.height,
         child: const NewHabitBottomSheetContent(),

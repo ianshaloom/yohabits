@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 
-import '../../../constants.dart';
+import '../../../constants/asset_paths_constants.dart';
 import '../../../hive/models/habit/habit.dart';
 import '../../../hive/models/history/habit_history.dart';
 import '../../../hive/repo/database_manager.dart';

@@ -1,6 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
 
-import '../constants.dart';
+import '../constants/hive_constants.dart';
 import 'models/habit/habit.dart';
 import 'models/history/habit_history.dart';
 import 'models/onboard/onboard.dart';

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:yohabits/theme/text_scheme.dart';
 
-import '../../../constants.dart';
+import '../../../constants/asset_paths_constants.dart';
 
 class StreaksCard extends StatelessWidget {
   const StreaksCard({super.key});
@@ -10,6 +11,7 @@ class StreaksCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    final textTheme = Theme.of(context).textTheme;
     NumberFormat numberFormat = NumberFormat("00");
     double radius = 45;
 
@@ -34,16 +36,12 @@ class StreaksCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Padding(
+                    Padding(
                       padding: EdgeInsets.only(right: 25, left: 8),
                       child: Text(
                         'Overal Habits Streaks',
                         textAlign: TextAlign.justify,
-                        style: TextStyle(
-                          fontSize: 16,
-                          //fontWeight: FontWeight.bold,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: bodyDefaultBold(textTheme),
                       ),
                     ),
                     const SizedBox(
@@ -87,24 +85,18 @@ class StreaksCard extends StatelessWidget {
                                   Text(
                                     numberFormat.format(00),
                                     textAlign: TextAlign.justify,
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 1,
-                                    ),
+                                    style: bodyLarge(textTheme),
                                   ),
                                 ],
                               ),
                             ),
                           ],
                         ),
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Text(
                             'Current Streak',
-                            style: TextStyle(
-                              letterSpacing: 1.5,
-                            ),
+                            style: bodyDefault(textTheme),
                           ),
                         )
                       ],
@@ -130,27 +122,19 @@ class StreaksCard extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Text(
-                                    numberFormat.format(00),
-                                    textAlign: TextAlign.justify,
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 1,
-                                    ),
-                                  ),
+                                  Text(numberFormat.format(00),
+                                      textAlign: TextAlign.justify,
+                                      style: bodyLarge(textTheme)),
                                 ],
                               ),
                             ),
                           ],
                         ),
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Text(
                             'Longest Streak',
-                            style: TextStyle(
-                              letterSpacing: 1.5,
-                            ),
+                            style: bodyDefault(textTheme),
                           ),
                         )
                       ],
@@ -175,15 +159,10 @@ class StreaksCard extends StatelessWidget {
                 },
                 style: FilledButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(5),
                   ),
-                  minimumSize: const Size.fromHeight(60),
-                  // textStyle: Theme.of(context)
-                  //     .textTheme
-                  //     .labelLarge!
-                  //     .copyWith(
-                  //       fontSize: 17,
-                  //     ),
+                  minimumSize: const Size.fromHeight(50),
+                  textStyle: textTheme.labelMedium,
                 ),
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.end,

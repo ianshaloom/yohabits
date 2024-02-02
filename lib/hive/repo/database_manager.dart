@@ -70,7 +70,6 @@ class DatabaseManager {
 
     // Sort dates in descending order
     daysCompleted.sort((a, b) => b.compareTo(a));
-    print('Days completed: ${daysCompleted.length}');
 
     try {
       for (int i = 0; i < (daysCompleted.length - 1); i++) {
@@ -95,7 +94,6 @@ class DatabaseManager {
     int i = 0;
 
     for (var element in daysCompleted) {
-      print('${element.day} is at index $i');
       i++;
     }
   }

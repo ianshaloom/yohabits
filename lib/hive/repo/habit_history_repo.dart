@@ -1,6 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
 
-import '../../constants.dart';
+import '../../constants/hive_constants.dart';
 import '../../features/home-page/repo/date_time.dart';
 import '../models/history/habit_history.dart';
 
@@ -14,7 +14,6 @@ class HabitHistoryRepo {
 
   Future<void> addHabitHistory(HabitsRecord habitHistory) async {
     String key = todaysDate();
-    print('key===============> : $key');
     await _habitHistoryBox.put(key, habitHistory);
   }
 

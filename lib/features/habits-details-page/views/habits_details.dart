@@ -5,9 +5,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
+import '../../../constants/asset_paths_constants.dart';
 import '../../../hive/models/habit/habit.dart';
 import '../../../hive/models/history/habit_history.dart';
+import '../../../theme/text_scheme.dart';
 import '../provider/habits_details_provider.dart';
 import '../widgets/edit_habit_widget.dart';
 
@@ -26,24 +27,16 @@ class HabitDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final color = Theme.of(context).colorScheme;
     context.read<HabitDetailProvider>().initializeHabit = habit;
 
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          'Created on: ${DateFormat.yMMMd().format(context.watch<HabitDetailProvider>().habit.dateCreated)} ★'
-          ' ${DateFormat.Hm().format(context.watch<HabitDetailProvider>().habit.dateCreated)}',
-          // style: const TextStyle(
-          //   color: Color(0xff939191),
-          //   fontSize: 10,
-          //   letterSpacing: 1.5,
-          // ),
-          style: textTheme.titleSmall!.copyWith(
-            fontWeight: FontWeight.w500,
-            fontSize: 10,
-            letterSpacing: 1.5,
-            color: const Color(0xff939191),
+          'Created on ${DateFormat.yMMMd().format(context.watch<HabitDetailProvider>().habit.dateCreated)}',
+          style: bodyDefaultBold(textTheme).copyWith(
+            fontSize: 13,
           ),
         ),
         leading: IconButton(
@@ -60,8 +53,9 @@ class HabitDetailsPage extends StatelessWidget {
               child: ListView(
                 children: [
                   SizedBox(
-                    height: 150,
                     child: Card(
+                      elevation: 0,
+                      color: color.onSurface.withOpacity(0.1),
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
@@ -72,9 +66,7 @@ class HabitDetailsPage extends StatelessWidget {
                                   .read<HabitDetailProvider>()
                                   .habit
                                   .habitName,
-                              style: textTheme.titleLarge!.copyWith(
-                                fontWeight: FontWeight.w600,
-                              ),
+                              style: bodyDefaultBold(textTheme),
                             ),
                             const Divider(),
                             Text(
@@ -82,9 +74,7 @@ class HabitDetailsPage extends StatelessWidget {
                                   .read<HabitDetailProvider>()
                                   .habit
                                   .habitDescription,
-                              style: textTheme.titleMedium!.copyWith(
-                                fontSize: 12,
-                              ),
+                              style: bodyDefault(textTheme),
                             ),
                           ],
                         ),
@@ -92,8 +82,9 @@ class HabitDetailsPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: 110,
                     child: Card(
+                      elevation: 0,
+                      color: color.onSurface.withOpacity(0.1),
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
@@ -108,28 +99,22 @@ class HabitDetailsPage extends StatelessWidget {
                                 const SizedBox(width: 10),
                                 Text(
                                   'Time of Day',
-                                  style: textTheme.titleSmall!.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 15,
-                                  ),
+                                  style: bodyDefaultBold(textTheme),
                                 ),
                               ],
                             ),
                             const Divider(),
-                            Text(
-                              'Tommorrow, 20:00',
-                              style: textTheme.titleMedium!.copyWith(
-                                fontSize: 12,
-                              ),
-                            ),
+                            Text('Tommorrow, 20:00',
+                                style: bodyDefault(textTheme)),
                           ],
                         ),
                       ),
                     ),
                   ),
                   SizedBox(
-                    height: 110,
                     child: Card(
+                      elevation: 0,
+                      color: color.onSurface.withOpacity(0.1),
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
@@ -144,19 +129,14 @@ class HabitDetailsPage extends StatelessWidget {
                                 const SizedBox(width: 10),
                                 Text(
                                   'Place',
-                                  style: textTheme.titleSmall!.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 15,
-                                  ),
+                                  style: bodyDefaultBold(textTheme),
                                 ),
                               ],
                             ),
                             const Divider(),
                             Text(
                               'Home, Work, Gym, School, etc.',
-                              style: textTheme.titleMedium!.copyWith(
-                                fontSize: 12,
-                              ),
+                              style: bodyDefault(textTheme),
                             ),
                           ],
                         ),
@@ -218,23 +198,29 @@ class HabitDetailsPage extends StatelessWidget {
 
   void _showModalBs(BuildContext context) {
     showModalBottomSheet(
-      context: context,
       isScrollControlled: true,
-      showDragHandle: true,
-      useSafeArea: true,
-      builder: (context) => SizedBox(
-        height: MediaQuery.of(context).size.height,
-        child: const EditHabitWidget(),
+      isDismissible: true,
+      context: context,
+      builder: (context) => EditHabitWidget(
+        onEdit: context.read<HabitDetailProvider>().newHabit,
       ),
     );
   }
 
   void _showAleartDialog(BuildContext context) async {
+    final textTheme = Theme.of(context).textTheme;
+
     final bool confirm = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete Habit'),
-        content: const Text('Are you sure you want to delete this habit?'),
+        title: Text(
+          'Delete Habit',
+          style: bodyLarge(textTheme),
+        ),
+        content: Text(
+          'Are you sure you want to delete this habit?',
+          style: bodyDefault(textTheme),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -264,6 +250,8 @@ class RowButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Expanded(
       child: FilledButton(
         onPressed: onPressed,
@@ -284,7 +272,7 @@ class RowButton extends StatelessWidget {
             const SizedBox(height: 5),
             Text(
               title,
-              style: Theme.of(context).textTheme.labelSmall,
+              style: bodyDefault(textTheme),
             ),
           ],
         ),
@@ -307,14 +295,14 @@ class Streaks extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    final color = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     NumberFormat numberFormat = NumberFormat("00");
     double radius = 45;
-    double fontSize1 = 14;
-    String fontFam = 'Gilroy';
 
     return Card(
-      elevation: 2,
+      elevation: 0,
+      color: color.onSurface.withOpacity(0.1),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: Column(
@@ -326,26 +314,20 @@ class Streaks extends StatelessWidget {
               children: [
                 Text(
                   'Habit Streaks',
-                  style: textTheme.titleMedium!.copyWith(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 15,
-                  ),
+                  style: bodyDefaultBold(textTheme),
                 ),
                 Text(
                   lastCompleted == null
                       ? 'Last Completed: Never'
                       : 'Last Completed: ${DateFormat.yMMMd().format(lastCompleted!)}',
-                  style: const TextStyle(
-                    color: Color(0xff939191),
-                    fontSize: 9,
-                    letterSpacing: 1.5,
+                  style: bodyDefault(textTheme).copyWith(
+                    fontSize: 10,
                   ),
                 ),
               ],
             ),
             const Divider(),
             Container(
-              // height: 210,
               width: screenSize.width,
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
@@ -382,9 +364,7 @@ class Streaks extends StatelessWidget {
                                     Text(
                                       numberFormat.format(currentStreak),
                                       textAlign: TextAlign.justify,
-                                      style: textTheme.titleMedium!.copyWith(
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                                      style: bodyLarge(textTheme),
                                     ),
                                   ],
                                 ),
@@ -395,11 +375,7 @@ class Streaks extends StatelessWidget {
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
                               'Current Streak',
-                              style: textTheme.labelMedium!.copyWith(
-                                letterSpacing: 1.5,
-                                fontSize: fontSize1,
-                                fontFamily: fontFam,
-                              ),
+                              style: bodyDefault(textTheme),
                             ),
                           )
                         ],
@@ -428,9 +404,7 @@ class Streaks extends StatelessWidget {
                                     Text(
                                       numberFormat.format(longestStreak),
                                       textAlign: TextAlign.justify,
-                                      style: textTheme.titleMedium!.copyWith(
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                                      style: bodyLarge(textTheme),
                                     ),
                                   ],
                                 ),
@@ -441,11 +415,7 @@ class Streaks extends StatelessWidget {
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
                               'Longest Streak',
-                              style: textTheme.labelMedium!.copyWith(
-                                letterSpacing: 1.5,
-                                fontSize: fontSize1,
-                                fontFamily: fontFam,
-                              ),
+                              style: bodyDefault(textTheme),
                             ),
                           )
                         ],

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -24,97 +25,99 @@ class _NewHabitBottomSheetContentState
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    final screenSize = MediaQuery.of(context).size;
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            SizedBox(
-              width: screenSize.width,
-            ),
-            Text(
-              'Add New Habit',
-              style: textTheme.titleMedium,
-            ),
-            const SizedBox(height: 20),
-
-            // date created text
-            Text(
-              '${DateFormat.yMMMd().format(DateTime.now())} ★ ${DateFormat.H().format(DateTime.now())} : ${DateFormat.M().format(DateTime.now())}',
-              style: const TextStyle(
-                color: Color(0xff939191),
-                fontSize: 10,
-                letterSpacing: 1.5,
+    return Padding(
+      padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: const Icon(CupertinoIcons.xmark),
               ),
-            ),
-            const SizedBox(height: 20),
-            TextFormField(
-              textCapitalization: TextCapitalization.words,
-              autocorrect: false,
-              textInputAction: TextInputAction.next,
-              controller: habitNameController,
-              decoration: InputDecoration(
-                labelText: 'Habit Name',
-                // labelStyle: textTheme.labelMedium,
-                hintText: 'Enter habit name',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter habit name';
-                }
-                return null;
-              },
-            ),
-
-            // habit description textformfield
-            const SizedBox(height: 20),
-            TextFormField(
-              controller: habitDescriptionController,
-              maxLines: 4,
-              textCapitalization: TextCapitalization.sentences,
-              autocorrect: false,
-              textInputAction: TextInputAction.done,
-              decoration: InputDecoration(
-                labelText: 'Description',
-                // labelStyle: textTheme.labelMedium,
-                hintText: 'Enter habit description',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              const Spacer()
+            ],
+          ),
+          Form(
+            key: _formKey,
+            child: Column(
               children: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Cancel'),
+                // date created text
+                Text(
+                  '${DateFormat.yMMMd().format(DateTime.now())} ★ ${DateFormat.H().format(DateTime.now())} : ${DateFormat.M().format(DateTime.now())}',
+                  style: const TextStyle(
+                    color: Color(0xff939191),
+                    fontSize: 10,
+                    letterSpacing: 1.5,
+                  ),
                 ),
-                const SizedBox(width: 20),
-                TextButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      _addNewHabit(
-                        habitNameController.text.trim(),
-                        habitDescriptionController.text.trim(),
-                      );
+                const SizedBox(height: 20),
+                TextFormField(
+                  textCapitalization: TextCapitalization.words,
+                  autocorrect: false,
+                  textInputAction: TextInputAction.next,
+                  controller: habitNameController,
+                  decoration: InputDecoration(
+                    labelText: 'Habit Name',
+                    // labelStyle: textTheme.labelMedium,
+                    hintText: 'Enter habit name',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter habit name';
                     }
+                    return null;
                   },
-                  child: const Text('Save'),
-                )
+                ),
+
+                // habit description textformfield
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: habitDescriptionController,
+                  maxLines: 4,
+                  textCapitalization: TextCapitalization.sentences,
+                  autocorrect: false,
+                  textInputAction: TextInputAction.done,
+                  decoration: InputDecoration(
+                    labelText: 'Description',
+                    // labelStyle: textTheme.labelMedium,
+                    hintText: 'Enter habit description',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Cancel'),
+                    ),
+                    const SizedBox(width: 20),
+                    TextButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          _addNewHabit(
+                            habitNameController.text.trim(),
+                            habitDescriptionController.text.trim(),
+                          );
+                        }
+                      },
+                      child: const Text('Save'),
+                    )
+                  ],
+                ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

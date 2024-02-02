@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
+import '../../../constants/asset_paths_constants.dart';
 import '../provider/user_profile_provider.dart';
 
 class UserAvatars extends StatefulWidget {

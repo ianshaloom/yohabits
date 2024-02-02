@@ -1,6 +1,7 @@
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../constants.dart';
+import '../../../constants/asset_paths_constants.dart';
 
 part 'userprofile.g.dart';
 

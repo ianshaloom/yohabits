@@ -3,9 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../hive/hive_boxes.dart';
 import '../../../hive/models/habit/habit.dart';
-import '../../../hive/models/history/habit_history.dart';
 import '../../../hive/repo/database_manager.dart';
-import '../repo/date_time.dart';
 import 'habit_tile.dart';
 
 class HabitsListview extends StatelessWidget {
